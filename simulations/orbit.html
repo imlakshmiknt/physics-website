@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Planet Orbit</title>
+<style>
+body{text-align:center}
+canvas{border:1px solid black}
+</style>
+</head>
+
+<body>
+
+<h2>Planet Orbit Simulation</h2>
+
+<canvas id="canvas" width="500" height="400"></canvas>
+
+<script>
+
+let canvas=document.getElementById("canvas")
+let ctx=canvas.getContext("2d")
+
+let angle=0
+
+function animate(){
+
+ctx.clearRect(0,0,500,400)
+
+ctx.beginPath()
+ctx.arc(250,200,20,0,2*Math.PI)
+ctx.fill()
+
+let x=250+100*Math.cos(angle)
+let y=200+100*Math.sin(angle)
+
+ctx.beginPath()
+ctx.arc(x,y,10,0,2*Math.PI)
+ctx.fill()
+
+angle+=0.02
+
+requestAnimationFrame(animate)
+
+}
+
+animate()
+
+</script>
+
+</body>
+</html>
