@@ -1,0 +1,305 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Physics Test Series</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#eef2f7;
+}
+
+.header{
+background:#0f172a;
+color:white;
+padding:15px;
+font-size:20px;
+}
+
+.timer{
+float:right;
+}
+
+.container{
+display:flex;
+}
+
+.question-area{
+flex:3;
+padding:30px;
+background:white;
+}
+
+.palette{
+flex:1;
+background:#f8fafc;
+padding:20px;
+border-left:1px solid #ccc;
+}
+
+.palette button{
+width:40px;
+height:40px;
+margin:5px;
+border:none;
+background:#cbd5e1;
+cursor:pointer;
+}
+
+.palette button.attempted{
+background:#22c55e;
+color:white;
+}
+
+.palette button.review{
+background:#a855f7;
+color:white;
+}
+
+.palette button.active{
+border:3px solid black;
+}
+
+.option{
+display:block;
+padding:10px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:5px;
+cursor:pointer;
+}
+
+.option:hover{
+background:#e2e8f0;
+}
+
+.controls button{
+padding:10px 20px;
+margin:10px;
+cursor:pointer;
+}
+
+img{
+max-width:300px;
+}
+
+.result{
+text-align:center;
+font-size:24px;
+padding:100px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+Physics Online Test
+<span class="timer" id="timer">300</span>
+</div>
+
+<div class="container">
+
+<div class="question-area">
+
+<div id="question"></div>
+<div id="options"></div>
+
+<div class="controls">
+
+<button onclick="prevQuestion()">Previous</button>
+<button onclick="nextQuestion()">Next</button>
+<button onclick="markReview()">Mark for Review</button>
+<button onclick="finishTest()">Submit</button>
+
+</div>
+
+</div>
+
+<div class="palette" id="palette"></div>
+
+</div>
+
+<script>
+
+let quiz=[
+
+{
+question:"Speed of light in vacuum?",
+options:["3×10^8 m/s","3×10^6 m/s","3×10^5 m/s","3×10^3 m/s"],
+correct:0
+},
+
+{
+question:"Newton second law?",
+options:["F=ma","E=mc^2","V=IR","P=IV"],
+correct:0
+},
+
+{
+question:"Identify device",
+image:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Newtons_cradle_animation_book_2.gif",
+options:["Barometer","Thermometer","Newton cradle","Voltmeter"],
+correct:2
+},
+
+{
+question:"SI unit of current?",
+options:["Volt","Ampere","Ohm","Watt"],
+correct:1
+},
+
+{
+question:"Bohr model describes?",
+options:["Electron orbit","Heat transfer","Magnetism","Sound"],
+correct:0
+}
+
+];
+
+let current=0;
+let answers=new Array(quiz.length);
+let review=new Array(quiz.length);
+
+function loadQuestion(){
+
+let q=quiz[current];
+
+let html="<h3>Q"+(current+1)+". "+q.question+"</h3>";
+
+if(q.image){
+html+="<img src='"+q.image+"'>";
+}
+
+document.getElementById("question").innerHTML=html;
+
+let opt="";
+
+q.options.forEach((o,i)=>{
+
+opt+="<div class='option' onclick='selectOption("+i+")'>"+o+"</div>";
+
+});
+
+document.getElementById("options").innerHTML=opt;
+
+updatePalette();
+
+}
+
+function selectOption(i){
+
+answers[current]=i;
+
+let btn=document.querySelectorAll(".palette button")[current];
+btn.classList.add("attempted");
+
+}
+
+function nextQuestion(){
+
+if(current<quiz.length-1){
+current++;
+loadQuestion();
+}
+
+}
+
+function prevQuestion(){
+
+if(current>0){
+current--;
+loadQuestion();
+}
+
+}
+
+function markReview(){
+
+review[current]=true;
+
+let btn=document.querySelectorAll(".palette button")[current];
+btn.classList.add("review");
+
+}
+
+function buildPalette(){
+
+let html="";
+
+quiz.forEach((q,i)=>{
+
+html+="<button onclick='jump("+i+")'>"+(i+1)+"</button>";
+
+});
+
+document.getElementById("palette").innerHTML=html;
+
+}
+
+function jump(i){
+
+current=i;
+loadQuestion();
+
+}
+
+function updatePalette(){
+
+let btn=document.querySelectorAll(".palette button");
+
+btn.forEach((b,i)=>{
+
+b.classList.remove("active");
+
+if(i===current){
+b.classList.add("active");
+}
+
+});
+
+}
+
+function finishTest(){
+
+let score=0;
+
+quiz.forEach((q,i)=>{
+
+if(answers[i]===q.correct){
+score++;
+}
+
+});
+
+document.body.innerHTML="<div class='result'>Test Finished 🎉<br>Score: "+score+" / "+quiz.length+"</div>";
+
+}
+
+let time=300;
+
+setInterval(()=>{
+
+time--;
+
+document.getElementById("timer").innerText=time+" sec";
+
+if(time<=0){
+finishTest();
+}
+
+},1000);
+
+buildPalette();
+loadQuestion();
+
+</script>
+
+</body>
+</html>
+```
