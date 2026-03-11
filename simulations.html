@@ -1,0 +1,150 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Physics Simulations</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f0f4f8;
+text-align:center;
+margin:0;
+}
+
+header{
+background:#0f172a;
+color:white;
+padding:20px;
+}
+
+.simulation{
+background:white;
+padding:30px;
+margin:30px auto;
+width:80%;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+canvas{
+border:1px solid #ccc;
+}
+
+button{
+padding:10px 20px;
+margin-top:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>Physics Simulations Lab</h1>
+</header>
+
+<!-- Wave Simulation -->
+
+<div class="simulation">
+
+<h2>Wave Motion Simulation</h2>
+
+<canvas id="waveCanvas" width="600" height="200"></canvas>
+
+<br>
+<button onclick="startWave()">Start Wave</button>
+
+</div>
+
+<!-- Projectile Simulation -->
+
+<div class="simulation">
+
+<h2>Projectile Motion</h2>
+
+<canvas id="projectileCanvas" width="600" height="200"></canvas>
+
+<br>
+<button onclick="launch()">Launch</button>
+
+</div>
+
+<script>
+
+let waveCanvas=document.getElementById("waveCanvas");
+let waveCtx=waveCanvas.getContext("2d");
+
+let t=0;
+
+function startWave(){
+
+setInterval(()=>{
+
+waveCtx.clearRect(0,0,600,200);
+
+waveCtx.beginPath();
+
+for(let x=0;x<600;x++){
+
+let y=100+50*Math.sin((x+t)/30);
+
+waveCtx.lineTo(x,y);
+
+}
+
+waveCtx.stroke();
+
+t+=5;
+
+},50);
+
+}
+
+let canvas=document.getElementById("projectileCanvas");
+let ctx=canvas.getContext("2d");
+
+let x=0;
+let y=180;
+let vx=5;
+let vy=-15;
+let g=0.5;
+
+function launch(){
+
+let interval=setInterval(()=>{
+
+ctx.clearRect(0,0,600,200);
+
+ctx.beginPath();
+
+ctx.arc(x,y,10,0,2*Math.PI);
+
+ctx.fill();
+
+x+=vx;
+y+=vy;
+
+vy+=g;
+
+if(y>180){
+
+clearInterval(interval);
+
+}
+
+},30);
+
+}
+
+</script>
+
+</body>
+
+</html>
+```
