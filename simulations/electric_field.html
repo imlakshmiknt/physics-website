@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Electric Field</title>
+<style>
+body{text-align:center}
+canvas{border:1px solid black}
+</style>
+</head>
+
+<body>
+
+<h2>Electric Field Simulation</h2>
+
+<canvas id="canvas" width="500" height="400"></canvas>
+
+<script>
+
+let canvas=document.getElementById("canvas")
+let ctx=canvas.getContext("2d")
+
+let charge={x:250,y:200}
+
+canvas.addEventListener("mousemove",function(e){
+
+ctx.clearRect(0,0,500,400)
+
+let dx=e.offsetX-charge.x
+let dy=e.offsetY-charge.y
+
+ctx.beginPath()
+ctx.moveTo(charge.x,charge.y)
+ctx.lineTo(e.offsetX,e.offsetY)
+ctx.stroke()
+
+})
+
+</script>
+
+</body>
+</html>
