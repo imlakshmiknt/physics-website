@@ -1,37 +1,225 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<title>Physics Quiz</title>
-<link rel="stylesheet" href="style.css">
+<title>Physics Test</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f1f5f9;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.question{
+font-size:20px;
+margin-bottom:20px;
+}
+
+.option{
+display:block;
+padding:12px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:6px;
+cursor:pointer;
+}
+
+.option:hover{
+background:#e2e8f0;
+}
+
+.correct{
+background:#bbf7d0;
+}
+
+.wrong{
+background:#fecaca;
+}
+
+img{
+max-width:300px;
+margin:15px 0;
+}
+
+.timer{
+float:right;
+font-size:18px;
+color:red;
+}
+
+.result{
+font-size:22px;
+text-align:center;
+}
+
+.solution{
+margin-top:15px;
+display:none;
+color:#2563eb;
+}
+
+button{
+padding:10px 20px;
+margin-top:20px;
+cursor:pointer;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<h2>Physics Quiz</h2>
+<div class="container">
 
-<p>What is the speed of swas?</p>
+<h2>Physics Quiz <span class="timer" id="timer">60</span></h2>
 
-<button onclick="check1()">3 × 10^8 m/s</button>
+<div id="quiz"></div>
 
-<button onclick="wrong()">3 × 10^6 m/s</button>
+<button onclick="nextQuestion()">Next</button>
+
+</div>
 
 <script>
 
-function check1(){
+let quiz = [
 
-alert("Correct ✅");
+{
+question:"1. Speed of light in vacuum is?",
+options:["3×10^8 m/s","3×10^6 m/s","3×10^5 m/s","3×10^3 m/s"],
+correct:0,
+solution:"Speed of light in vacuum = 3×10^8 m/s"
+},
+
+{
+question:"2. Newton's second law states?",
+options:["F=ma","E=mc^2","V=IR","P=IV"],
+correct:0,
+solution:"Force equals mass times acceleration."
+},
+
+{
+question:"3. Identify this apparatus",
+image:"https://upload.wikimedia.org/wikipedia/commons/3/3a/Newtons_cradle_animation_book_2.gif",
+options:["Barometer","Thermometer","Newton's Cradle","Voltmeter"],
+correct:2,
+solution:"Newton's cradle demonstrates conservation of momentum."
+},
+
+{
+question:"4. SI unit of electric current?",
+options:["Volt","Ampere","Ohm","Watt"],
+correct:1,
+solution:"Electric current SI unit is Ampere."
+},
+
+{
+question:"5. Identify the atomic model",
+image:"https://upload.wikimedia.org/wikipedia/commons/6/6f/Bohr_atom_model.svg",
+options:["Bohr model","Rutherford model","Thomson model","Quantum model"],
+correct:0,
+solution:"Bohr model describes electrons orbiting nucleus."
+}
+
+];
+
+let current=0;
+let score=0;
+
+function loadQuestion(){
+
+let q=quiz[current];
+
+let html="<div class='question'>"+q.question+"</div>";
+
+if(q.image){
+html+="<img src='"+q.image+"'>";
+}
+
+q.options.forEach((opt,i)=>{
+
+html+="<div class='option' onclick='checkAnswer("+i+",this)'>"+opt+"</div>";
+
+});
+
+html+="<div class='solution' id='solution'></div>";
+
+document.getElementById("quiz").innerHTML=html;
 
 }
 
-function wrong(){
+function checkAnswer(i,element){
 
-alert("Wrong ❌");
+let q=quiz[current];
+let sol=document.getElementById("solution");
+
+if(i===q.correct){
+
+element.classList.add("correct");
+score++;
 
 }
+else{
+
+element.classList.add("wrong");
+
+}
+
+sol.innerHTML="Solution: "+q.solution;
+sol.style.display="block";
+
+}
+
+function nextQuestion(){
+
+current++;
+
+if(current<quiz.length){
+
+loadQuestion();
+
+}
+else{
+
+document.getElementById("quiz").innerHTML="<div class='result'>Test Finished<br>Score: "+score+" / "+quiz.length+"</div>";
+
+}
+
+}
+
+let time=60;
+
+setInterval(()=>{
+
+time--;
+
+document.getElementById("timer").innerText=time;
+
+if(time<=0){
+
+alert("Time Up!");
+
+}
+
+},1000);
+
+loadQuestion();
 
 </script>
 
 </body>
+
 </html>
